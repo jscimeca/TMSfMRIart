@@ -1,4 +1,4 @@
-function [artifact_components, r_squared, beta_array, residuals_array] = TMSfMRI_explainVariance(x_mat_filename,y_mat_filename, threshold, model_predictors)
+function [artifact_components, r_squared, beta_array, residuals_array] = TMSfMRIart(x_mat_filename,y_mat_filename, threshold, model_predictors)
 % TMSfMRI_explainVariance 
 % > uses timing & intensity of TMS to flag specific MELODIC components for removal via a simple multiple regression model
 % > JMS 2017
@@ -35,7 +35,7 @@ function [artifact_components, r_squared, beta_array, residuals_array] = TMSfMRI
 %   > this does not currenly use spatial information to flag components for removal (over and above the inherent spatiotemporal nature of MELODIC)
 %
 %%%%% sample command: 
-% [artifact_components, r_squared] = TMSfMRI_explainVariance('run1x','run1y', .4, [1 2 3 4 5]);
+% [artifact_components, r_squared] = TMSfMRIart('run1x','run1y_P003', .4, [1 2 3 4 5]);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -79,16 +79,19 @@ disp(' ')
 % Potentially useful figures to generate at the end of the script:
 
 % >>> Plot all of the r_squared values; useful to see spread and ensure threshold is appropriate
-if 0 % set to 1 to enable
-    figure; bar(r_squared);
-    % horizontal axis: component number
+if 1 % set to 1 to enable
+    figure; EVbar=bar(r_squared);
+    title('Explained Variance for Each Component');
+    xlabel('Components');
+    ylabel('Explained Variance (R^2)');
 end
 
 % >>> Plot the betas for each selected component
-if ~isempty(artifact_components) && 0 % set to 1 to enable
-    figure; bar(transpose(beta_array(:,artifact_components)))
-    % horizontal axis groups: artifact components; bars: regressor betas
-    % vertical axis: beta value
+if ~isempty(artifact_components) && 1 % set to 1 to enable
+    figure; bar(transpose(beta_array(:,artifact_components)));
+    title('Regression Coefficients for Each Artifact Component');
+    xlabel('Artifact Components');
+    ylabel('Beta Weight');
 end
 
 % >>> Generate the best-fit regression line for any component; plot that line, the corresponding residual, and the raw component timecourse:
