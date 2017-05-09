@@ -98,10 +98,10 @@ end
 %   > This can be useful for exploring how the residual structure of a given component changes depending on which regressors are included.
 if ~isempty(artifact_components) && 0 % set to 1 to enable
     % Pick an artifact component for which to do this:
-    componentNum=artifact_components(1); 
+    componentNum=artifact_components(3); 
     % Or, pick an arbitrary component:
     % componentNum=1; 
-    
+    figure;
     regressLine=x_mat(:,model_predictors)*beta_array(:,componentNum);
     hold on
     plot(regressLine,'color',[0 1 0]); % plot regression line in green
